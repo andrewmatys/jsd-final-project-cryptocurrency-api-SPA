@@ -40,13 +40,9 @@ button:hover {
 }
 
 
-
 body {
-  background: url('https://wallpapers.com/images/high/4k-bitcoin-8ac6tlvi0psj4b23.webp');
+  background: url('https://img.freepik.com/free-photo/different-colored-bitcoin-frame_23-2148285321.jpg?w=1380&t=st=1701928321~exp=1701928921~hmac=b88bd54ee73932b30276c4bb025a833ce057501f60d7332d4246499e054c77e7');
   background-size: cover;
-  
-}
-body {
   display: grid; /* map to grid */
   margin: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -59,34 +55,45 @@ body {
 
 h1 {
   border: 1px solid hsl(0, 0%, 80%);
-  box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.8);
+  box-shadow: 15px 15px 15px hsla(0, 0%, 0%, 0.8);
   border-radius: 15px;
   text-align: center;
-  background-color: rgba(255, 166, 0, 0.55);
+  background-color: rgba(255, 166, 0, 0.25);
   color:  black;
   font-family: Arial, Helvetica, sans-serif;
   padding: 20px;
-  margin: 25px 400px;
+  margin: 25px 200px;
   font-family: Arial, Helvetica, sans-serif;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 
+
+/* results top 10 coins*/
 p {
 border: 1px solid hsl(0, 0%, 80%);
-box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.8);
+box-shadow: 15px 15px 15px hsla(0, 0%, 0%, 0.8);
 border-radius: 15px;
 text-align: center;
 /* background-color: rgba(255, 166, 0, 0.55); */
-background-color: rgba(0, 0, 0, 0.55); 
-
-color:  white;
+/* background-color: hwb(39 0% 0%)0 (0, 0, 0, 0.8);  */
+background-color: orange;
+color: black;
 font-family: Arial, Helvetica, sans-serif;
 padding: 10px;
-margin: 10px 500px;
-font-family: Arial, Helvetica, sans-serif;
+/* margin: 10px 500px; */
+margin: 20px 600px;
+font-family: 'Courier New', Courier, monospace;
+font-size: larger;
 -webkit-backdrop-filter: blur(5px);
 backdrop-filter: blur(5px);
+
+}
+
+p:hover {
+  cursor: pointer;
+  color: green; /*text not cursor */
+  border: 1px solid green;
 }
 
 .movieDetails {
@@ -107,17 +114,24 @@ backdrop-filter: blur(5px);
   margin: 5px;
 }
 
-
+/*top 10 coins by Marketcap*/
 h2 {
   border: 1px solid hsl(0, 0%, 80%);
   box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.60);
-  border-radius: 15px;
-  margin: 25px 250px;
+  border-radius: 5px;
+  margin: 25px 500px 25px 500px;
+  padding: 20px 5px 20px 5px;
   text-align: center;
   background-color: goldenrod;
+  font-family: 'Courier New', Courier, monospace
+
 }
 
 
 form {
+  text-align: center;
+}
+
+p>loading {
   text-align: center;
 }
