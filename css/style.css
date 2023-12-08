@@ -5,11 +5,30 @@ button {
   margin: 10px;
 }
 
+
 #searchText {
-  width: 200px;
+  width: 160px;
 }
 
 
+h1 {
+
+  left: 0px;
+  top: 0px;
+
+  border: 1px solid hsl(0, 0%, 80%);
+  box-shadow: 15px 15px 15px hsla(0, 0%, 0%, 0.8);
+  border-radius: 15px;
+  text-align: center;
+  background-color: rgba(255, 166, 0, 0.25);
+  color:  black;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 20px;
+  margin: 25px 200px 25px 200px;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
 
 
 #results {
@@ -40,17 +59,11 @@ button:hover {
 body {
   background: url('https://img.freepik.com/free-photo/different-colored-bitcoin-frame_23-2148285321.jpg?w=1380&t=st=1701928321~exp=1701928921~hmac=b88bd54ee73932b30276c4bb025a833ce057501f60d7332d4246499e054c77e7');
   background-size: cover;
-  
-  
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
-
-
-  
-  
   /* display: grid; */
-  margin: 1rem;
+   margin: 1rem; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -58,25 +71,65 @@ body {
 
 }
   
+/*top 10 coins by Marketcap HEADING*/
+h2 {
+  border: 1px solid black;
 
-
-h1 {
-  border: 1px solid hsl(0, 0%, 80%);
-  box-shadow: 15px 15px 15px hsla(0, 0%, 0%, 0.8);
-  border-radius: 15px;
+  /* border: 2px solid hsl(0, 0%, 80%); */
+  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.60);
+  border-radius: 5px;
+  margin: 25px 125px;
+  padding: 10px 5px 10px 5px;
   text-align: center;
-  background-color: rgba(255, 166, 0, 0.25);
-  color:  black;
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 20px;
-  margin: 25px 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  background-color: silver;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 20px;
+}
+
+.coinDetails h2 {
+  border: 1px solid black;
+
+  /* border: 2px solid hsl(0, 0%, 80%); */
+  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.60);
+  border-radius: 5px;
+  margin: 25px 125px;
+  padding: 10px 5px 10px 5px;
+  text-align: center;
+  background-color: silver;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 20px;
 }
 
 
 
+
+/* div */
+.topTen {
+  /* display: flex;
+  justify-content: flex-start;
+  flex-direction: column; */
+  position: absolute;
+  
+
+  
+}
+
+
+
+/*coin pics*/
+img { 
+  /* box-sizing: border-box; */
+  
+  
+  border: 1px solid silver;
+    /* border: 1px solid hsl(0, 0%, 80%); */
+  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.60); 
+  border-radius: 25px; 
+  margin: 10px 0px -20px 0px;
+  width: 50px; /*coin size*/
+  height: 50px; /*coin size*/
+ 
+}
 
 
 
@@ -84,40 +137,23 @@ h1 {
 /* results top 10 coins*/
 p {
   border: 1px solid hsl(0, 0%, 80%);
-  box-shadow: 15px 15px 15px hsla(0, 0%, 0%, 0.8);
+  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.8);
   border-radius: 15px;
-  text-align: center;
+  text-align: left;
   /* background-color: rgba(255, 166, 0, 0.55); */
   /* background-color: hwb(39 0% 0%)0 (0, 0, 0, 0.8);  */
   background-color: orange;
   color: black;
   font-family: Arial, Helvetica, sans-serif;
   padding: 10px;
-  /* margin: 10px 500px; */
-  /* margin: 20px 600px; */
+  margin: 0px 400px 10px 0px;
+
+  
   font-family: 'Courier New', Courier, monospace;
-  font-size: larger;
+  font-size: medium;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
-
-img {
-  
-  box-sizing: border-box;
-  border: 1px solid hsl(0, 0%, 80%);
-  box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.60); 
-  border-radius: 15px; 
-  padding: 5px; 
-  width: 50px;
-  height: 50px;
-  
-/* 
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
-  height: auto; */
-  
-} 
 
  
 
@@ -132,14 +168,7 @@ img {
 
 
 
-
-
-
-
-
-
-
-
+ 
 p:hover {
   cursor: pointer;
   color: green; /*text not cursor */
@@ -164,18 +193,6 @@ p:hover {
   margin: 5px;
 }
 
-/*top 10 coins by Marketcap*/
-h2 {
-  border: 1px solid hsl(0, 0%, 80%);
-  box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.60);
-  border-radius: 5px;
-  /* margin: 25px 500px 25px 500px; */
-  padding: 20px 5px 20px 5px;
-  text-align: center;
-  background-color: goldenrod;
-  font-family: 'Courier New', Courier, monospace
-
-}
 
 
 form {
@@ -183,17 +200,11 @@ form {
 }
 
 input {
-  background-color: aquamarine;
+  background-color: lightslategray;
 
 }
 
 p>loading {
   text-align: center;
-}
-
-#topTen {
-    max-width: 100%;
-    height: auto;
-   
 }
 

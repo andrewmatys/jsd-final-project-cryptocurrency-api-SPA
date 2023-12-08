@@ -24,7 +24,7 @@ const cryptoApp = {
             searchText: document.querySelector('#searchText'),
             //searchResults: document.querySelector('#results'),
             //reviewsDiv: document.querySelector('#reviews'),
-            topTenCoinsDiv: document.querySelector('#topTen'),
+            topTenCoinsDiv: document.querySelector('.topTen'),
             coinDetails: document.querySelector('#coinDetails'),
             topTenHeading: document.querySelector('#topTenHeading')
         };
@@ -34,7 +34,8 @@ const cryptoApp = {
 
 
         this.dom.searchForm.addEventListener('submit', (ev) => {
-            this.dom.topTenCoinsDiv.replaceChildren();                  // delete TOP 10 COIN LIST once form submitted
+            //this.dom.topTenHeading.replaceChildren();// clear top10 heading. CHECK IF NEEDED
+            this.dom.topTenCoinsDiv.replaceChildren();                  // delete TOP 10 COIN LIST once form submitted    CHECK IF NEEDED
             //console.log(`Form submitted! ie BUTTON CLICKED`, Math.random());
             console.log('Value submitted:', this.dom.searchText.value); // user input
             const coinId = this.dom.searchText.value.toLowerCase();         // to suit 'id' key value
@@ -84,15 +85,16 @@ const cryptoApp = {
 
     renderTopTen(coins) {
         
-        //console.log(`Array of top 10 coins: `, coins);                // array of top 10 coins by marketcap value passed to function
+        //console.log(`Array of top 10 coins: `, coins);                    // array of top 10 coins by marketcap value passed to function
         let orderNumber = 1;
         for(const coin of coins){
             console.log('COIN URL', coin.image);
             const pTag = document.createElement('p');
             const imgNode = document.createElement('img');
+            const lineBreak = document.createElement('br');
 
             pTag.innerHTML += (orderNumber + '. ' + coin.name + ': $' + coin.current_price);    // display coin and it's current price (top 10)
-            pTag.dataset.id = coin.id;                                  // adds new attribute called "data-id" to the 'p' tag, which then stores the JSON key 'id' value of each coin. 'id' in this case is the name of the coin in lowerCase.
+            pTag.dataset.id = coin.id;                                      // adds new attribute called "data-id" to the 'p' tag, which then stores the JSON key 'id' value of each coin. 'id' in this case is the name of the coin in lowerCase.
                
 
             
@@ -100,17 +102,17 @@ const cryptoApp = {
             imgNode.alt = `Coin Image`;
             // dataset make a new att:
             // <img data-id="${movie.id)" src=...>
-            imgNode.dataset.id = coin.id;   // new att added "data-id" //  allocates 'id' to popular movies
+            imgNode.dataset.id = coin.id;   // new att added "data-id"     //  allocates 'id' to popular movies
             
             //this.dom.popularDiv is a DOM node we can append CHILD (img) to 
             
 
 
-            orderNumber++;                                              // increment top 10 counter by 1
+            orderNumber++;                                                 // increment top 10 counter by 1
             //console.log('Image URL:', this.generateImageURL(coin.id));
             this.dom.topTenCoinsDiv.appendChild(imgNode);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
-
-            this.dom.topTenCoinsDiv.appendChild(pTag);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (pTag) to 
+            this.dom.topTenCoinsDiv.appendChild(lineBreak);                // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
+            this.dom.topTenCoinsDiv.appendChild(pTag);                     // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (pTag) to 
 
         }
 
@@ -203,6 +205,7 @@ const cryptoApp = {
     renderCoinDetails(selectedCoin){
         console.log('Coin details in render function: ', selectedCoin); 
 
+        //this.dom.topTenHeading.replaceChildren();// clear top10 heading
         this.dom.topTenCoinsDiv.replaceChildren();// clear top10 list
         this.dom.coinDetails.replaceChildren(); //clear if new search???????
 
@@ -228,11 +231,11 @@ const cryptoApp = {
 
         const pTag = document.createElement('p');
         pTag.innerHTML = `SYMBOL: ${selectedCoin[0].symbol.toUpperCase()} <br/>`;
-        pTag.innerHTML += `CURRENT PRICE: $${Number(selectedCoin[0].current_price.toFixed(2))} <br/>`;
+        pTag.innerHTML += `CURRENT PRICE: $${Number(selectedCoin[0].current_price.toFixed(2)).toLocaleString()} <br/>`;
         pTag.innerHTML += `MARKETCAP: $${selectedCoin[0].market_cap.toLocaleString()} <br/>`;
         pTag.innerHTML += `PRICE CHANGE LAST 24HRS: $${Number(selectedCoin[0].price_change_24h.toFixed(3))} <br/>`;
         pTag.innerHTML += `PRICE CHANGE % LAST 24HRS: ${Number(selectedCoin[0].price_change_percentage_24h.toFixed(2))}% <br/>`;
-        pTag.innerHTML += `ALL TIME HIGH: $${Number(selectedCoin[0].ath.toFixed(2))} <br/>`;
+        pTag.innerHTML += `ALL TIME HIGH: $${Number(selectedCoin[0].ath.toFixed(2)).toLocaleString()} <br/>`;
     
         this.dom.coinDetails.appendChild(pTag);
 
@@ -280,26 +283,29 @@ cryptoApp.loadTopTen(); // load and render top 10 crypto coins based on total ma
 /*
 TODO:
 ============================================================
-- RENDER MESSAGE TO USER coin does not exist in HTML (not just console.log)
+- RENDER MESSAGE TO USER "coin does not exist" in HTML (not just console.log)
 
 - make when click coin (top 10) CSS shadow dissappear??
 
 - style with CSS
 - remove unused CSS
 
+- disable green highlight of info box on coin details screen
 
+- check if need to add a dataset att
 
-
+- incorporate generateImg function
 
 CHALLENGES FACED:
 ===========================================================
-- how i created coinChecker() show nested tree and for loop etc nneded to use coin id lowercase: - when searching, form input will have to be search against: 'data.id' not symbol as too ambiguous
-ie. issues many coins had the same name values in different keys eg 'symbol: "bitcoin", name: "ElonXAIDogeMessi69PepeInu" ' VS symbol: "btc", name: "Bitcoin"
-symbol key must be ignored therefore cant use coin codes as too ambiguous and  the value must be lowercase to suit 'id'
+- created coinChecker() 
+- many coins had the same name values in different keys e.g.  (id:"bitcoin", symbol: "btc", name: "Bitcoin") VS (id:"elonXAIDogeMessi69PepeInu", symbol:"bitcoin", name:"ElonXAIDogeMessi69PepeInu") 
+Therefore had to locate coins using 'id key' thus 'symbol' & 'name' had to be ignored. Also added a lowercase method to the user input in case typed e.g "Bitcoin".
 
 new methods researched and used:
 -Number(): (to round number)
 -toLocaleString(): inserts commas into large numbers 
+-lots of CSS!
 
 
 */
