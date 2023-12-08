@@ -25,7 +25,7 @@ const cryptoApp = {
             //searchResults: document.querySelector('#results'),
             //reviewsDiv: document.querySelector('#reviews'),
             topTenCoinsDiv: document.querySelector('#topTen'),
-            coinDetails: document.querySelector('#details'),
+            coinDetails: document.querySelector('#coinDetails'),
             topTenHeading: document.querySelector('#topTenHeading')
         };
     
@@ -50,6 +50,7 @@ const cryptoApp = {
             if (ev.target.nodeName === 'P'){
                 console.log(`Top 10 coin clicked: `, ev.target.dataset.id);
             }
+        this.loadCoinDetails(ev.target.dataset.id);
         }); // addEventListener 'CLICK' event for top 10 coins list
 
     }, // initUI()
@@ -86,16 +87,31 @@ const cryptoApp = {
         //console.log(`Array of top 10 coins: `, coins);                // array of top 10 coins by marketcap value passed to function
         let orderNumber = 1;
         for(const coin of coins){
-            //console.log(coin.name);
+            console.log('COIN URL', coin.image);
             const pTag = document.createElement('p');
+            const imgNode = document.createElement('img');
+
             pTag.innerHTML += (orderNumber + '. ' + coin.name + ': $' + coin.current_price);    // display coin and it's current price (top 10)
             pTag.dataset.id = coin.id;                                  // adds new attribute called "data-id" to the 'p' tag, which then stores the JSON key 'id' value of each coin. 'id' in this case is the name of the coin in lowerCase.
-                                                                        // this will allow ability to click on a coin in top 10 list instead of searching
+               
+
             
+            imgNode.src = coin.image;    
+            imgNode.alt = `Coin Image`;
+            // dataset make a new att:
+            // <img data-id="${movie.id)" src=...>
+            imgNode.dataset.id = coin.id;   // new att added "data-id" //  allocates 'id' to popular movies
             
+            //this.dom.popularDiv is a DOM node we can append CHILD (img) to 
+            
+
+
             orderNumber++;                                              // increment top 10 counter by 1
-            
+            //console.log('Image URL:', this.generateImageURL(coin.id));
+            this.dom.topTenCoinsDiv.appendChild(imgNode);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
+
             this.dom.topTenCoinsDiv.appendChild(pTag);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (pTag) to 
+
         }
 
     }, // renderTopTen())
@@ -107,7 +123,7 @@ const cryptoApp = {
 
         axios.get(this.config.CRYPTO_FULL_LIST, {
             params: {
-                include_platform: false,        // include platform contract addresses
+                //include_platform: false,        // include platform contract addresses
                 vs_currency: 'aud',             // currency type
                 api_key: this.config.API_KEY
             }
@@ -144,7 +160,7 @@ const cryptoApp = {
                 console.log(`Error loading data for the selected coin...`, error);
                 }) // .catch()       
             } else {
-                console.log('COIN DOES NOT EXIST! in list.');  
+                console.log('COIN DOES NOT EXIST in list!');  
                   // render to HTML //TODO   
             }
         }) //.then()
@@ -174,7 +190,7 @@ const cryptoApp = {
             console.log(`Coin details - Array of Objects:`, res.data);
             console.log('details to be printed:', res.data[0].id, res.data[0].symbol, res.data[0].name, res.data[0].market_cap, res.data[0].price_change_24h, res.data[0].price_change_percentage_24h, res.data[0].ath);
 
-            this.renderCoinDetails(res.data[0].id) // pass selected movie object to func renderMovieDetails()            
+            this.renderCoinDetails(res.data) // pass selected movie object to func renderMovieDetails()            
         }) //.then()
         .catch( (err) => {
             console.warn(`There was an error....`, err);
@@ -183,80 +199,107 @@ const cryptoApp = {
     }, // loadMovieDetails()
 
 
-////////////////////////////////////////////////////////ABOVE COMPLETE//////////////////////////////////////////
-
-//TODO BELOW:
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
 
     renderCoinDetails(selectedCoin){
-        console.log('Coin details: ', selectedCoin); 
-    },// renderMovieDetails()
+        console.log('Coin details in render function: ', selectedCoin); 
+
+        this.dom.topTenCoinsDiv.replaceChildren();// clear top10 list
+        this.dom.coinDetails.replaceChildren(); //clear if new search???????
+
+        //this.dom.searchForm.style.display = 'none'; // hide searchbar KEEP FOR FURTHER SEARCHES???? CHECK
+
+        //this.dom.coinDetails.style.display = 'block';  //CSS unhide movies
+        //this.dom.coinDetails.replaceChildren(); //clear if new search???????
+
+        const headingTag = document.createElement('h2'); 
+        headingTag.classList.add('coinDetails'); // add class to h2
+
+        console.log('coin id:', selectedCoin[0].id)
+        headingTag.innerHTML = selectedCoin[0].name; // or coin.name????? (capitalised)
+
+        this.dom.coinDetails.appendChild(headingTag);
+
+        const imgTag = document.createElement('img');
+        imgTag.classList.add('resultImage'); // add class to img
+        imgTag.src = selectedCoin[0].image; 
+        imgTag.alt = selectedCoin[0].name;
+        // add IMG to DOM
+        this.dom.coinDetails.appendChild(imgTag);
+
+        const pTag = document.createElement('p');
+        pTag.innerHTML = `SYMBOL: ${selectedCoin[0].symbol.toUpperCase()} <br/>`;
+        pTag.innerHTML += `CURRENT PRICE: $${Number(selectedCoin[0].current_price.toFixed(2))} <br/>`;
+        pTag.innerHTML += `MARKETCAP: $${selectedCoin[0].market_cap.toLocaleString()} <br/>`;
+        pTag.innerHTML += `PRICE CHANGE LAST 24HRS: $${Number(selectedCoin[0].price_change_24h.toFixed(3))} <br/>`;
+        pTag.innerHTML += `PRICE CHANGE % LAST 24HRS: ${Number(selectedCoin[0].price_change_percentage_24h.toFixed(2))}% <br/>`;
+        pTag.innerHTML += `ALL TIME HIGH: $${Number(selectedCoin[0].ath.toFixed(2))} <br/>`;
+    
+        this.dom.coinDetails.appendChild(pTag);
+
+    },// renderCoinDetails()
 
 
 
 
+////////////////////////////////////////////////////////ABOVE COMPLETE////////////////////////////////////////////////////////
+
+// -change so that generateIMG for top10 and coin details use the BELOW function::
+////////////////////////////////////////////////////////WORK BELOW/////////////////////////////////////////////////////////////////
 
 
+
+        
+    generateImageURL(coinId){ 
+        axios.get(this.config.CRYPTO_FULL_LIST, {
+            params: {
+                vs_currency: 'aud',             // currency type
+                api_key: this.config.API_KEY
+            }
+        })
+        .then( res => {
+            console.log('coin URL: ', res.data[0].image);
+            coinImage = res.data[0].image;
+            return coinImage;
+        })
+        .catch( (err) => {
+            console.warn(`There was an error loading image....`, err);
+        }) //.catch()
+        
+    }, // generateImageURL(): returns URL of specific coin as a string
 
 } // cryptoApp
 
+
 cryptoApp.initUI(); ///initialises ie the methods in the variable don't run automatically
-cryptoApp.loadTopTen(); // run top 10 crypto
-
-
-
-
-
-
-
-
-
-
+cryptoApp.loadTopTen(); // load and render top 10 crypto coins based on total marketcap
 
 
 
 
 
 /*
-ISSUES/TODO:
-============
+TODO:
+============================================================
 - RENDER MESSAGE TO USER coin does not exist in HTML (not just console.log)
-
-
-- images: render in top 10 list & for coinDetails page
-use 'BELOW' for coin details including link to IMG
-https://api.coingecko.com/api/v3/coins/markets?vs_currency=aud&ids=bitcoin&per_page=1&sparkline=false&price_change_percentage=24h&locale=en&precision=2
-
 
 - make when click coin (top 10) CSS shadow dissappear??
 
-- hide 'top 10 coins by Marketcap' banner when submit form
-
+- style with CSS
 - remove unused CSS
 
 
 
 
 
-
-
 CHALLENGES FACED:
-=================
+===========================================================
 - how i created coinChecker() show nested tree and for loop etc nneded to use coin id lowercase: - when searching, form input will have to be search against: 'data.id' not symbol as too ambiguous
 ie. issues many coins had the same name values in different keys eg 'symbol: "bitcoin", name: "ElonXAIDogeMessi69PepeInu" ' VS symbol: "btc", name: "Bitcoin"
 symbol key must be ignored therefore cant use coin codes as too ambiguous and  the value must be lowercase to suit 'id'
 
-
-
-
-
+new methods researched and used:
+-Number(): (to round number)
+-toLocaleString(): inserts commas into large numbers 
 
 
 */
