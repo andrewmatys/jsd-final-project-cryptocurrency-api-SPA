@@ -25,8 +25,11 @@ const cryptoApp = {
             //searchResults: document.querySelector('#results'),
             //reviewsDiv: document.querySelector('#reviews'),
             topTenCoinsDiv: document.querySelector('.topTen'),
-            coinDetails: document.querySelector('#coinDetails'),
-            topTenHeading: document.querySelector('#topTenHeading')
+            coinDetails: document.querySelector('.coinDetails'), // was #coindetails
+            //topTenHeading: document.querySelector('#topTenHeading')
+            navBar: document.querySelector('.navBar'),
+            errorMessageDiv: document.querySelector('#error')
+
         };
     
 
@@ -54,11 +57,30 @@ const cryptoApp = {
         this.loadCoinDetails(ev.target.dataset.id);
         }); // addEventListener 'CLICK' event for top 10 coins list
 
+
+
+
+///////////////// WORKING HERE////////////////////////////////////////
+        //mainpage
+        this.dom.navBar.addEventListener('click', (ev) => {
+            if (ev.target.nodeName === 'LI'){
+                console.log(`Home clicked!`, ev.target);
+                if(ev.target.id === 'home'){
+                    this.loadTopTen()
+                }
+            }
+        }); // addEventListener 'CLICK' event for homepage
+////////////////////////////////////////////////////////////////////
+
+
+
     }, // initUI()
 
 
 
     loadTopTen() {
+
+
 
         axios.get(this.config.CRYPTO_BASE_URL, {
             params: {
@@ -85,6 +107,10 @@ const cryptoApp = {
 
     renderTopTen(coins) {
         
+        this.dom.coinDetails.replaceChildren(); //clear if homepage laoded from navbar YES
+        //this.dom.errorMessageDiv.replaceChildren(); //clear any error messages YES
+
+
         //console.log(`Array of top 10 coins: `, coins);                    // array of top 10 coins by marketcap value passed to function
         let orderNumber = 1;
         for(const coin of coins){
@@ -111,7 +137,7 @@ const cryptoApp = {
             orderNumber++;                                                 // increment top 10 counter by 1
             //console.log('Image URL:', this.generateImageURL(coin.id));
             this.dom.topTenCoinsDiv.appendChild(imgNode);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
-            this.dom.topTenCoinsDiv.appendChild(lineBreak);                // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
+            this.dom.topTenCoinsDiv.appendChild(lineBreak);                
             this.dom.topTenCoinsDiv.appendChild(pTag);                     // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (pTag) to 
 
         }
@@ -163,6 +189,10 @@ const cryptoApp = {
                 }) // .catch()       
             } else {
                 console.log('COIN DOES NOT EXIST in list!');  
+                this.dom.errorMessageDiv.style.display = 'block'; // error message appears thus remove previous h2 and details of correct coin if any
+                this.dom.coinDetails.replaceChildren(); //clear existing h2 and details of correct coin if any when error occurs YES
+
+                
                   // render to HTML //TODO   
             }
         }) //.then()
@@ -204,41 +234,42 @@ const cryptoApp = {
 
     renderCoinDetails(selectedCoin){
         console.log('Coin details in render function: ', selectedCoin); 
+     
+            //this.dom.topTenHeading.replaceChildren();// clear top10 heading
+            this.dom.topTenCoinsDiv.replaceChildren();// clear top10 list
+            this.dom.coinDetails.replaceChildren(); //clear if new search???????
+            this.dom.errorMessageDiv.style.display = 'none'; //clear any error messages xxx
 
-        //this.dom.topTenHeading.replaceChildren();// clear top10 heading
-        this.dom.topTenCoinsDiv.replaceChildren();// clear top10 list
-        this.dom.coinDetails.replaceChildren(); //clear if new search???????
+            //this.dom.searchForm.style.display = 'none'; // hide searchbar KEEP FOR FURTHER SEARCHES???? CHECK
 
-        //this.dom.searchForm.style.display = 'none'; // hide searchbar KEEP FOR FURTHER SEARCHES???? CHECK
+            //this.dom.coinDetails.style.display = 'block';  //CSS unhide movies
+            //this.dom.coinDetails.replaceChildren(); //clear if new search???????
 
-        //this.dom.coinDetails.style.display = 'block';  //CSS unhide movies
-        //this.dom.coinDetails.replaceChildren(); //clear if new search???????
+            const headingTag = document.createElement('h2'); 
+            headingTag.classList.add('coinDetails'); // add class to h2
 
-        const headingTag = document.createElement('h2'); 
-        headingTag.classList.add('coinDetails'); // add class to h2
+            console.log('coin id:', selectedCoin[0].id)
+            headingTag.innerHTML = selectedCoin[0].name; // or coin.name????? (capitalised)
 
-        console.log('coin id:', selectedCoin[0].id)
-        headingTag.innerHTML = selectedCoin[0].name; // or coin.name????? (capitalised)
+            this.dom.coinDetails.appendChild(headingTag);
 
-        this.dom.coinDetails.appendChild(headingTag);
+            const imgTag = document.createElement('img');
+            imgTag.classList.add('resultImage'); // add class to img
+            imgTag.src = selectedCoin[0].image; 
+            imgTag.alt = selectedCoin[0].name;
+            // add IMG to DOM
+            this.dom.coinDetails.appendChild(imgTag);
 
-        const imgTag = document.createElement('img');
-        imgTag.classList.add('resultImage'); // add class to img
-        imgTag.src = selectedCoin[0].image; 
-        imgTag.alt = selectedCoin[0].name;
-        // add IMG to DOM
-        this.dom.coinDetails.appendChild(imgTag);
-
-        const pTag = document.createElement('p');
-        pTag.innerHTML = `SYMBOL: ${selectedCoin[0].symbol.toUpperCase()} <br/>`;
-        pTag.innerHTML += `CURRENT PRICE: $${Number(selectedCoin[0].current_price.toFixed(2)).toLocaleString()} <br/>`;
-        pTag.innerHTML += `MARKETCAP: $${selectedCoin[0].market_cap.toLocaleString()} <br/>`;
-        pTag.innerHTML += `PRICE CHANGE LAST 24HRS: $${Number(selectedCoin[0].price_change_24h.toFixed(3))} <br/>`;
-        pTag.innerHTML += `PRICE CHANGE % LAST 24HRS: ${Number(selectedCoin[0].price_change_percentage_24h.toFixed(2))}% <br/>`;
-        pTag.innerHTML += `ALL TIME HIGH: $${Number(selectedCoin[0].ath.toFixed(2)).toLocaleString()} <br/>`;
-    
-        this.dom.coinDetails.appendChild(pTag);
-
+            const pTag = document.createElement('p');
+            pTag.innerHTML = `SYMBOL: ${selectedCoin[0].symbol.toUpperCase()} <br/>`;
+            pTag.innerHTML += `CURRENT PRICE: $${Number(selectedCoin[0].current_price.toFixed(2)).toLocaleString()} <br/>`;
+            pTag.innerHTML += `MARKETCAP: $${selectedCoin[0].market_cap.toLocaleString()} <br/>`;
+            pTag.innerHTML += `PRICE CHANGE LAST 24HRS: $${Number(selectedCoin[0].price_change_24h.toFixed(3))} <br/>`;
+            pTag.innerHTML += `PRICE CHANGE % LAST 24HRS: ${Number(selectedCoin[0].price_change_percentage_24h.toFixed(2))}% <br/>`;
+            pTag.innerHTML += `ALL TIME HIGH: $${Number(selectedCoin[0].ath.toFixed(2)).toLocaleString()} <br/>`;
+        
+            this.dom.coinDetails.appendChild(pTag);
+                    
     },// renderCoinDetails()
 
 
@@ -283,18 +314,18 @@ cryptoApp.loadTopTen(); // load and render top 10 crypto coins based on total ma
 /*
 TODO:
 ============================================================
-- RENDER MESSAGE TO USER "coin does not exist" in HTML (not just console.log)
 
-- make when click coin (top 10) CSS shadow dissappear??
 
 - style with CSS
 - remove unused CSS
 
-- disable green highlight of info box on coin details screen
 
 - check if need to add a dataset att
 
 - incorporate generateImg function
+
+- add nav bar (About)
+
 
 CHALLENGES FACED:
 ===========================================================

@@ -19,48 +19,51 @@
     </head>
     <body>
 
-    <div id="layout">
-
-        <h1>Cryptocurrency API</h1>
 
 
+    <h1>Cryptocurrency API</h1>
+
+
+    <nav class="navBar">
+            <ul>
+                <li id="home">Home</li>
+                <li id="about">About</li>
+            </ul>
+    </nav>
 
 
 
+ 
         
-        <form id="searchForm">
-            <input type="text" id="searchText" placeholder="Enter coin/token name...">
-            <button>Search</button>
-        </form>
-
-     
-
-
-
-
-            
-            
-        <div class="topTen">
-            <h2>Top 10 coins by Marketcap:</h2>
-
-
-        </div>
-
-
-
-
-
-
-
-
-
-
-        <div id="coinDetails"></div>
+            <form id="searchForm">
+                <input type="text" id="searchText" placeholder="Enter coin/token name..." autocomplete="off">
+                <button>Search</button>
+            </form>
         
+    
+    <div id="layout">        
+                
+            <div class="topTen">
+                <h2>Top 10 coins by Marketcap:</h2>
+            </div>
+
+
+
+            <div class="coinDetails"> 
+                <!-- this was id="coindetails" -->
+
+            </div>
+            
+
+            <div >
+                <h3 id="error">That coin does not exist...</h3>
+            </div>
+        
+
     </div>
 
 
-      
+           
 
 
     </body>
