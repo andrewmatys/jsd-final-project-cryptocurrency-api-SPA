@@ -34,9 +34,11 @@ const cryptoApp = {
         };
     
 
+
         this.dom.searchText.focus();                                    // cursor appears in form
 
 
+        // form submitted
         this.dom.searchForm.addEventListener('submit', (ev) => {
             //this.dom.topTenHeading.replaceChildren();// clear top10 heading. CHECK IF NEEDED
             this.dom.topTenCoinsDiv.replaceChildren();                 //does this deleta the heading for good ie top 10 coins div
@@ -47,19 +49,24 @@ const cryptoApp = {
             ev.preventDefault();                                        // prevent form submit page reload upon user submit button ALLOW TO RELOAD
         
             this.coinChecker(coinId);
-        }); // addEventListener 'submit' event for submit form
+        }); // addEventListener 'SUBMIT' event for submit form
    
 
-
+        
+        // Top 10 clicked
         this.dom.topTenCoinsDiv.addEventListener('click', (ev) => {
             if (ev.target.nodeName === 'P'){
                 console.log(`Top 10 coin clicked: `, ev.target.dataset.id);
             }  
-            this.loadCoinDetails(ev.target.dataset.id);
+            
+            console.log('this is passed to loadCoinDetails():', ev.target.dataset.id); // name of coin (data-id)
+
+            this.loadCoinDetails(ev.target.dataset.id); 
         }); // addEventListener 'CLICK' event for top 10 coins list
 
 
-        //Homepage
+
+        //Homepage/Trending NAVbar
         this.dom.navBar.addEventListener('click', (ev) => {
             // if (ev.target.nodeName === 'LI'){
             //     console.log(`Nav bar item clicked!`, ev.target);
@@ -70,7 +77,62 @@ const cryptoApp = {
                 console.log(`Trending clicked!`, ev.target);
                 this.loadTrending();
             }
-        }); // addEventListener 'CLICK' event for homepage
+        }); // addEventListener 'CLICK' event for Home/Trending NAVbar
+
+
+
+
+// CREATE DATASET for TRENDING???
+////////////////////////////////////////////////////////////////////////////////////
+        // Top 10 clicked
+        this.dom.trendingCoinsDiv.addEventListener('click', (ev) => {
+            if (ev.target.nodeName === 'P'){
+                console.log(`Trending coin clicked: `, ev.target.dataset.id);
+            }  
+            
+            console.log('this is passed to loadCoinDetails():', ev.target.dataset.id); // name of coin (data-id) from trending list
+
+            this.loadCoinDetails(ev.target.dataset.id); 
+        }); // addEventListener 'CLICK' event for trending coins list
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }, // initUI()
 
@@ -91,7 +153,7 @@ const cryptoApp = {
             }
         })
         .then( (res) => {
-            //console.log(`Top 10 crypto coins by marketcap: `, res.data);
+            console.log(`Top 10 crypto coins by marketcap: `, res.data);
             this.renderTopTen(res.data);                             // run renderTopTen function where the argument is an array of the top 10 coins each element an object containing specific coin data
         }) //.then()
         .catch( (err) => {
@@ -140,7 +202,8 @@ const cryptoApp = {
  
 
 
-    coinChecker(inputData) {                               
+    coinChecker(inputData) {      
+
         console.log('arg passed to coinChecker():', inputData);
 
         axios.get(this.config.CRYPTO_FULL_LIST, {
@@ -199,24 +262,40 @@ const cryptoApp = {
 
 
 
-    loadCoinDetails(coinData){      
+    loadCoinDetails(coinName) {      
 
-        console.log(`data array of coin submitted in form: `, coinData);         // argument 'coinName' is value submitted in form by user that is verified as an existing coin by func coinchecker()
-        console.log('details to be printed:', coinData[0].id, coinData[0].symbol, coinData[0].name, coinData[0].market_cap, coinData[0].price_change_24h, coinData[0].price_change_percentage_24h, coinData[0].ath);
+        console.log(`value submitted in form/passed from top10 click event: `, coinName);                      // argument 'coinName' is value submitted in form by user that is verified as an existing coin by func coinchecker()
+         
+        this.coinExists = false;                                // reset coinChecker()
+        
+        axios.get(this.config.CRYPTO_BASE_URL, {
+            params: {
+                vs_currency: 'aud',              // currency type (input data)
+                ids: coinName,                  
+                precision: 2,                    // number of decimals
+                api_key: this.config.API_KEY
+            }
+        })
+        .then( (res) => {
+            console.log(`Coin details - Array of Objects of entered coin:`, res.data);
+            console.log('details to be printed:', res.data[0].id, res.data[0].symbol, res.data[0].name, res.data[0].market_cap, res.data[0].price_change_24h, res.data[0].price_change_percentage_24h, res.data[0].ath);
+            this.renderCoinDetails(res.data) // pass selected movie object to func renderMovieDetails()            
+        }) //.then()
+        .catch( (err) => {
+            console.warn(`There was an error....`, err);
+        }) //.catch()
+}, // loadCoinDetails()
 
-        this.coinExists = false;                                                 // reset coinChecker()
-        this.renderCoinDetails(coinData);
-  
-    }, // loadCoinDetails()
 
 
 
-
-    renderCoinDetails(selectedCoin){
+    renderCoinDetails(selectedCoin) {
 
         console.log('Coin details in render function: ', selectedCoin);  // contains the array with all object data of specified coin.
      
+        this.dom.topTenHeadingDiv.style.display = 'none';
         this.dom.topTenCoinsDiv.replaceChildren();// clear top10 list INCLUDES 'H3' AND 'P'... YES
+        
         this.dom.coinDetailsDiv.replaceChildren(); //clear if new search ... YES
         this.dom.errorMessageDiv.style.display = 'none'; //clear any error messages... YES
         this.dom.trendingDivHeading.style.display = 'none';                //hide headings for trending (TEST) and also add the 2x coins/NFTS trending replaceChildren()
@@ -345,22 +424,47 @@ cryptoApp.loadTopTen(); // load and render top 10 crypto coins based on total ma
 /*
 TODO:
 ============================================================
-1- check if need to add a dataset att YES
+1- allow clicking of coins in TRENDING LIST (not NFTS)
+2- CSS (Trending page)
 
-2- remove unused CSS
 
+
+
+
+X- remove unused CSS
+
+X- how host SAP in GitHub
+
+X- SAVE a JSON of the data to show in class (to avoid CORS lockout i.e. minimise API requests)
 
 
 CHALLENGES FACED:
 ===========================================================
-- created coinChecker() 
-- many coins had the same name values in different keys e.g.  (id:"bitcoin", symbol: "btc", name: "Bitcoin") VS (id:"elonXAIDogeMessi69PepeInu", symbol:"bitcoin", name:"ElonXAIDogeMessi69PepeInu") 
+- some coins were worth 1000ths of a cent, however i didnt change output to view these values of junk coins.. values are rounded to 2 decimals for easier viewing.
+- created coinChecker():
+many coins had the same name values in different keys e.g.  (id:"bitcoin", symbol: "btc", name: "Bitcoin") VS (id:"elonXAIDogeMessi69PepeInu", symbol:"bitcoin", name:"ElonXAIDogeMessi69PepeInu") 
 Therefore had to locate coins using 'id key' thus 'symbol' & 'name' had to be ignored. Also added a lowercase method to the user input in case typed e.g "Bitcoin".
 
 new methods researched and used:
 -Number(): (to round number)
 -toLocaleString(): inserts commas into large numbers 
 -lots of CSS!
+
+
+
+
+====================================================================
+A README.md file in your GitHub repository that includes:
+
+   - A link to the live app so people can try it out!
+   - An overview of your idea, with a description of the key features
+   - Any wireframes or diagrams you used during the planning stage
+   - A screenshot or two of the app is nice to have
+   - Explain a technical hurdle (something you struggled with)
+   - Explain some things you learned (something you enjoyed)
+   - If you used technology that we haven't covered in class, provide an overview of that
+   - Where next? What will you add? (i.e. Wishlist / Future Features)
+
 
 
 */

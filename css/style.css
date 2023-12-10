@@ -51,6 +51,8 @@ li:hover {
 
 
 
+
+
 form {
   margin: 10px 0px 10px 0px;
   text-align: center;
@@ -93,6 +95,21 @@ h2 {
 .trendingItems {
   display: none;
 
+}
+
+
+
+
+#coinsTrending p:hover {
+  cursor: pointer;
+  color: green; 
+  border: 1px solid green;
+}
+
+#coinsTrending img:hover {
+  cursor: pointer;
+  color: green; 
+  border: 1px solid green;
 }
 
 
