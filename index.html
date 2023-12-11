@@ -19,61 +19,51 @@
     </head>
     <body>
 
+        <h1>Cryptocurrency API</h1>
 
 
-    <h1>Cryptocurrency API</h1>
-
-
-    <nav class="navBar">
+        <nav class="navBar">
             <ul>
                 <li id="home">Home</li>
                 <li id="trending">Trending(Coins/NFTs)</li>
             </ul>
-    </nav>
+        </nav>
 
-
-
- 
         
-            <form id="searchForm">
-                <input type="text" id="searchText" placeholder="Enter coin/token name..." autocomplete="off">
-                <button>Search</button>
-            </form>
+        <form id="searchForm">
+            <input type="text" id="searchText" placeholder="Enter coin/token name..." autocomplete="off">
+            <button>Search</button>
+        </form>
         
     
-    <div id="topTenHeading">        
-            <h2>Top 10 coins by Marketcap:</h2>
-            
-            <div class="topTen">
+        <div id="topTenHeading">        
+                <h2>Top 10 coins by Marketcap:</h2>
+                
+                <div class="topTen">
 
-            </div>
-    </div>    
+                </div>
+        </div>    
 
 
-            <div class="coinDetails"> 
-              
-            </div>
+            <div class="coinDetails"></div>
             
 
             <div >
-                <h3 id="error">That coin does not exist...</h3>
+                <h3 id="error"><strong>That coin does not exist...</strong></h3>
             </div>
         
             
             <div class="trendingHeading">
                 <h2>Trending coins by activity</h2>
 
-                <div id="coinsTrending">
-                </div>
+                <div id="coinsTrending"></div>
 
-                <h2>Trending NFTs by activity</h2>
+                <h2 id="nft">Trending NFTs by activity</h2>
 
-                <div id="nftsTrending">
-                </div>
+                <div id="nftsTrending"></div>
             </div>
 
 
     </body>
-
    
 </html>

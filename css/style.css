@@ -2,10 +2,9 @@
 /* Cryptocurrency API */
 h1 {
   padding: 20px 200px;
-  /* margin: 25px 200px 10px 200px; */
   margin: 25px 10px 4px 10px;
   text-align: center;
-  border: 1px solid hsl(0, 0%, 80%);
+  border: 1px solid black;
   border-radius: 15px;
   background-color: rgba(255, 166, 0, 0.25);
   color:  black;
@@ -14,8 +13,6 @@ h1 {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 
-  /* check */
-  display: block; 
 }
 
 
@@ -29,13 +26,11 @@ h1 {
   list-style-type: none;  /* remove bullet points */
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
-
-  /* check */
-  overflow: hidden;
+   overflow: hidden;  /*navbar vorder visible*/
 }
 
 
-/*HOME ABOUT*/
+/*Home & Trending*/
 .navBar li { 
   padding: 10px;
   font-size: x-large;
@@ -45,12 +40,8 @@ h1 {
 
 li:hover {
   cursor: pointer;
-  color: green; /*text not cursor */
-  
+  color: green; 
 }
-
-
-
 
 
 form {
@@ -74,7 +65,7 @@ button {
   margin: 0px 10px;
   border: 1px solid darkgray;
   border-radius: 10px;
-  background-color: lightslategray;
+  background-color: silver;
   box-shadow: 20px 20px 5px hsla(0, 0%, 0%, 0.8);
 }
 
@@ -92,34 +83,51 @@ h2 {
 }
 
 
+/*coin pics*/
+img { 
+  border: 1px solid darkgray;
+  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.60); 
+  border-radius: 25px; 
+  margin: 7px 0px -15px 0px;
+  width: 50px; /*coin size*/
+  height: 50px; /*coin size*/
+}
+
+
+/* Coin Details HEADING */
+.coinDetails h2 {
+  border: 1px solid black;
+  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.60);
+  border-radius: 5px;
+  margin: 25px 125px;
+  /* padding: 10px 5px 10px 5px; */
+  padding: 20px;
+  text-align: center;
+  background-color: cyan;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 20px;
+}
+
+
+/* DETAILS top 10 coins*/
+p {
+  padding: 25px 25px;
+  margin: 0px 400px 10px 0px;
+  border: 1px solid hsl(0, 0%, 80%);
+  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.8);
+  border-radius: 15px;
+  text-align: left;
+  background-color:yellow;
+  color: black;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+
 .trendingItems {
-  display: none;
-
-}
-
-
-
-
-#coinsTrending p:hover {
-  cursor: pointer;
-  color: green; 
-  border: 1px solid green;
-}
-
-#coinsTrending img:hover {
-  cursor: pointer;
-  color: green; 
-  border: 1px solid green;
-}
-
-
-
-/*******************************************************************************************************/
-
-
-#results {
-  display: flex;    /*display horizontally*/
-  flex-wrap: wrap;  /* fit to window/screen etc */
+  display: none; /* hide heading at initial render */
 }
 
 
@@ -139,7 +147,11 @@ button:hover {
 
 body {
   margin: 1rem; 
+  background: url('../css/background/orange.avif');
+/* 
   background: url('https://img.freepik.com/free-photo/different-colored-bitcoin-frame_23-2148285321.jpg?w=1380&t=st=1701928321~exp=1701928921~hmac=b88bd54ee73932b30276c4bb025a833ce057501f60d7332d4246499e054c77e7');
+  */
+
   background-size: cover;
   display: grid;
   justify-content: center;
@@ -148,98 +160,36 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-  
 
 
- /* was p:hover */
 .topTen p:hover { 
   cursor: pointer;
-  color: green; /*text not cursor */
+  color: green; 
   border: 1px solid green;
 }
 
 
-
-
-
-
-/*********************************************************************************/
-/*coin pics*/
-img { 
-  /* box-sizing: border-box; */
-  border: 1px solid silver;
-    /* border: 1px solid hsl(0, 0%, 80%); */
-  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.60); 
-  border-radius: 25px; 
-  margin: 7px 0px -20px 0px;
-  width: 50px; /*coin size*/
-  height: 50px; /*coin size*/
-}
-
-/* check ALL (coin info box)*/
-.coinDetails h2 {
-  border: 1px solid black;
-
-  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.60);
-  border-radius: 5px;
-  margin: 25px 125px;
-  padding: 10px 5px 10px 5px;
-  text-align: center;
-  background-color: silver;
-  font-family: 'Courier New', Courier, monospace;
-  border-radius: 20px;
-}
-
-/* div */
-.topTen {
-  /* display: flex;
-  justify-content: flex-start;
-  flex-direction: column; */
-  position: absolute;
-  
-  
+#coinsTrending p:hover {
+  cursor: pointer;
+  color: green; 
+  border: 1px solid green;
 }
 
 
+#coinsTrending img:hover {
+  cursor: pointer;
+  color: green; 
+  border: 1px solid green;
+}
 #error {
+  margin: 150px 0px;
   display: none;
   color: red;
-  text-align: center;
-}
-
-
-/******************************************************************************/
-
-
-/* results top 10 coins*/
-p {
-  border: 1px solid hsl(0, 0%, 80%);
-  box-shadow: 15px 15px 5px hsla(0, 0%, 0%, 0.8);
-  border-radius: 15px;
   text-align: left;
-  /* background-color: rgba(255, 166, 0, 0.55); */
-  /* background-color: hwb(39 0% 0%)0 (0, 0, 0, 0.8);  */
-  background-color: orange;
-  color: black;
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 10px;
-  margin: 0px 400px 10px 0px;
-
-  
-  font-family: 'Courier New', Courier, monospace;
-  font-size: medium;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
 }
 
- 
 
-
-
-
-
-
-p>loading {
-  text-align: center;
+#nft {
+  margin: 100px 0px 0px 0px;
+  background-color:hotpink;
 }
-
