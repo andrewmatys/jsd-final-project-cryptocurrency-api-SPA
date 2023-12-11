@@ -7,7 +7,7 @@
 # OVERVIEW: 
 #         - On startup, this Cryptocurrency App loads a search form AND, a top 10 by Marketcap list of coins on the homepage. 
 #         - The user can then either click on one of the listed coin's name/image OR, enter a coin name in the search form. Either action will load the chosen coin and display more details.
-#         - User will be notified if coin is non-existant (if search form used).
+#         - User will be notified if coin is non-existent (if search form used).
 #         - Once in details page, further searches on other coins can be carried out using the search form.
 #         - Navigation by clicking on 'Home' re-renders top 10 list and search form.
 #         - Clicking on 'Trending (Coins/NFTs)' displays the top 15 coins by market Activity (which can be clicked on for more details) and a list of currently trending NFTs.
