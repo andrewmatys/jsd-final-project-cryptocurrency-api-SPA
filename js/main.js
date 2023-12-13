@@ -10,16 +10,20 @@ const cryptoApp = {
         CRYPTO_TRENDING_URL: "https://pro-api.coingecko.com/api/v3/search/trending"
     },
     
-                    
+
+    //empty object filled by initUI().             
     dom: {},
 
 
+    // for coinChecker().
     coinExists: false,
 
 
+
+    //initUI KEY, with a function() as a VALUE. ie initUI: function(){}.
     initUI() {
 
-        //dom Nodes
+        //Keys with querySelector values.
         this.dom = {
             searchForm: document.querySelector('#searchForm'),
             searchText: document.querySelector('#searchText'),
@@ -38,10 +42,12 @@ const cryptoApp = {
         };
     
 
-        this.dom.searchText.focus();                                        // cursor appears in form
+
+        this.dom.searchText.focus();                // cursor appears in form
 
 
-        // form submit eventListener
+
+        // form 'submit': addEventListener
         this.dom.searchForm.addEventListener('submit', (ev) => {
             
             this.dom.topTenCoinsDiv.replaceChildren();                      //does this deleta the heading for good ie top 10 coins div
@@ -54,7 +60,7 @@ const cryptoApp = {
    
 
         
-        // Top 10 clicked
+        // Top 10 'click': addEventListener
         this.dom.topTenCoinsDiv.addEventListener('click', (ev) => {
             if (ev.target.nodeName === 'P'){
                 //console.log(`Top 10 coin clicked: `, ev.target.dataset.id);
@@ -66,10 +72,8 @@ const cryptoApp = {
 
 
 
-        //Homepage/Trending NAVbar
+        //Homepage/Trending 'click' NavBar: addEventListener
         this.dom.navBar.addEventListener('click', (ev) => {
-            // if (ev.target.nodeName === 'LI'){
-            //     console.log(`Nav bar item clicked!`, ev.target);
             if(ev.target.id === 'home'){
                 //console.log(`Home clicked!`, ev.target);
                 this.loadTopTen();
@@ -82,12 +86,12 @@ const cryptoApp = {
 
 
 
-        // Top 10 clicked
+        // on Trending top 15 page 'click': addEventListener
         this.dom.trendingCoinsDiv.addEventListener('click', (ev) => {
             if (ev.target.nodeName === 'P'){
                 //console.log(`Trending coin clicked: `, ev.target.dataset.id);
             }  
-            
+               
             //console.log('this is passed to loadCoinDetails():', ev.target.dataset.id); // name of coin (data-id) from trending list
             this.loadCoinDetails(ev.target.dataset.id); 
 
@@ -97,7 +101,7 @@ const cryptoApp = {
 
 
 
-
+    //axios.get top 10 coin by marketcap details
     loadTopTen() {
 
         axios.get(this.config.CRYPTO_BASE_URL, {
@@ -113,7 +117,7 @@ const cryptoApp = {
         })
         .then( (res) => {
             //console.log(`Top 10 crypto coins by marketcap: `, res.data);
-            this.renderTopTen(res.data);                             // run renderTopTen function where the argument is an array of the top 10 coins each element an object containing specific coin data
+            this.renderTopTen(res.data);   // run renderTopTen function where the argument is an array of the top 10 coins each element an object containing specific coin data
         }) //.then()
         .catch( (err) => {
             console.warn(`There was an error loading top 10 currencies...`, err);
@@ -123,7 +127,7 @@ const cryptoApp = {
 
 
 
-
+    // render to HTML: top 10 data
     renderTopTen(coins) {
         
         this.dom.topTenHeadingDiv.style.display = 'block';  
@@ -132,7 +136,7 @@ const cryptoApp = {
         this.dom.trendingDivHeading.style.display = 'none';        //hide headings for trending
         this.dom.topTenCoinsDiv.replaceChildren();
         
-        //console.log(`Array of top 10 coins: `, coins);             // array of top 10 coins by marketcap value passed to function. Contains an array of object details for each coin ie 10 object elements within array
+        //console.log(`Array of top 10 coins: `, coins);     // array of top 10 coins by marketcap value passed to function. Contains an array of object details for each coin ie 10 object elements within array
        
         let orderNumber = 1;
 
@@ -143,25 +147,25 @@ const cryptoApp = {
             const lineBreak = document.createElement('br');
 
             pTag.innerHTML += (orderNumber + '. ' + coin.name + ': $' + coin.current_price);    // display coin and it's current price (top 10)
-            pTag.dataset.id = coin.id;                              // adds new attribute called "data-id" to the 'p' tag, which then stores the JSON key 'id' value of each coin. 'id' in this case is the name of the coin in lowerCase.
+            pTag.dataset.id = coin.id;      // adds new attribute called "data-id" to the 'p' tag, which then stores the JSON key 'id' value of each coin. 'id' in this case is the name of the coin in lowerCase.
                
             imgNode.src = coin.image;    
             imgNode.alt = `Coin Image`;
        
             imgNode.dataset.id = coin.id;   // new att added "data-id"     //  allocates 'id' to top10coins
-            
+            //console.log('the imgNode data: ', imgNode);
             orderNumber++;                                                 // increment top 10 counter by 1
 
-            this.dom.topTenCoinsDiv.appendChild(imgNode);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
+            this.dom.topTenCoinsDiv.appendChild(imgNode);                  // append IMG to DOM node (imgTag) 
             this.dom.topTenCoinsDiv.appendChild(lineBreak);                
-            this.dom.topTenCoinsDiv.appendChild(pTag);                     // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (pTag) to 
+            this.dom.topTenCoinsDiv.appendChild(pTag);                     // append P to DOM node (pTag) 
         }
 
     }, // renderTopTen())
 
 
 
-
+    // check FORM entered data for valid coin. Axios.get full list of coins
     coinChecker(inputData) {      
 
         //console.log('arg passed to coinChecker():', inputData);
@@ -186,7 +190,7 @@ const cryptoApp = {
             
                 axios.get(this.config.CRYPTO_BASE_URL, {
                     params: {
-                        ids: inputData,                 // coin name. Can use what the user entered or the coins id as have both ie 'inputData' OR 'coin.id'
+                        ids: inputData,                 // coin name. Can use what the user entered or the coin's 'id' here. ie 'inputData' OR 'coin.id'
                         vs_currency: 'aud',             // currency type
                         per_page: 1,
                         locale: 'en',                   // language
@@ -218,7 +222,7 @@ const cryptoApp = {
     
 
 
-
+    // if valid coin, axios.get coin details of specific coin
     loadCoinDetails(coinName) {      
 
         //console.log(`value submitted in form/passed from top10 click event: `, coinName);    // argument 'coinName' is value submitted in form by user that is verified as an existing coin by func coinchecker()
@@ -234,8 +238,9 @@ const cryptoApp = {
             }
         })
         .then( (res) => {
-            //console.log(`Coin details - Array of Objects of entered coin:`, res.data);
-            //console.log('details to be printed:', res.data[0].id, res.data[0].symbol, res.data[0].name, res.data[0].market_cap, res.data[0].price_change_24h, res.data[0].price_change_percentage_24h, res.data[0].ath);
+
+            console.log(`Coin details - Array of Objects of entered coin:`, res.data); // an array of 1 object with multiple key:value pairs)
+
             this.renderCoinDetails(res.data) // pass selected movie object to func renderMovieDetails()            
         }) //.then()
         .catch( (err) => {
@@ -246,9 +251,8 @@ const cryptoApp = {
 
 
 
-
+    // render to HTML: searched coin (FORM) / selected from Top10 
     renderCoinDetails(selectedCoin) {
-
         //console.log('Coin details in render function: ', selectedCoin);  // contains the array with all object data of specified coin.
      
         this.dom.topTenHeadingDiv.style.display = 'none';
@@ -286,8 +290,7 @@ const cryptoApp = {
     },// renderCoinDetails()
 
 
-
-        
+    //axios.get top 15 trending/NFTs details
     loadTrending() {
 
         axios.get(this.config.CRYPTO_TRENDING_URL, {
@@ -308,17 +311,17 @@ const cryptoApp = {
 
 
 
-
+    // render to HTML: trending coins with 
     renderTrending(coins, nfts) {
         
-        this.dom.trendingCoinsDiv.replaceChildren();    // replace any EXISTING trending coins
+        this.dom.trendingCoinsDiv.replaceChildren();     // replace any EXISTING trending coins
         this.dom.trendingNftsDiv.replaceChildren();      // replace any EXISTING trending NFTs
 
-        this.dom.errorMessageDiv.style.display = 'none'; //clear any error messages YES
-
+        this.dom.errorMessageDiv.style.display = 'none'; //clear any error messages... 
         this.dom.topTenHeadingDiv.style.display = 'none';
-        this.dom.topTenCoinsDiv.replaceChildren();// clear top10 list INCLUDES 'H3' AND 'P'... YES
-        this.dom.coinDetailsDiv.replaceChildren(); //clear if new search ... YES   
+
+        this.dom.topTenCoinsDiv.replaceChildren();      // clear top10 list INCLUDES 'H3' AND 'P'... 
+        this.dom.coinDetailsDiv.replaceChildren();      //clear if new search ...   
        
         this.dom.trendingDivHeading.style.display = 'block'; // show headings for trending
 
@@ -339,12 +342,14 @@ const cryptoApp = {
             imgNode.alt = `Coin Image`;
           
             imgNode.dataset.id = coin.item.id;                               // new att added "data-id"     
-            
-            this.dom.trendingCoinsDiv.appendChild(imgNode);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
+            //console.log('the imgNode data: ', imgNode);
+            this.dom.trendingCoinsDiv.appendChild(imgNode);                  
             this.dom.trendingCoinsDiv.appendChild(lineBreak);                
-            this.dom.trendingCoinsDiv.appendChild(pTag);                     // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (pTag) to 
+            this.dom.trendingCoinsDiv.appendChild(pTag);                     
 
         }
+
+
 
         //trendingNFTs
         for(const nft of nfts){
@@ -359,11 +364,11 @@ const cryptoApp = {
             imgNode.src = nft.thumb;    
             imgNode.alt = `NFT Image`;
          
-            imgNode.dataset.id = nft.id;                                    //  new att added "data-id" to trending NFTs
-        
-            this.dom.trendingNftsDiv.appendChild(imgNode);                  // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (imgTag) to 
+            imgNode.dataset.id = nft.id;                       //  new att added "data-id" to trending NFTs
+            //console.log('the imgNode data: ', imgNode);
+            this.dom.trendingNftsDiv.appendChild(imgNode);                  
             this.dom.trendingNftsDiv.appendChild(lineBreak);                
-            this.dom.trendingNftsDiv.appendChild(pTag);                     // this.dom.topTenCoinsDiv is a DOM node we can append CHILD (pTag) to 
+            this.dom.trendingNftsDiv.appendChild(pTag);                     
         }
 
     }, // renderTopTen())
@@ -371,14 +376,7 @@ const cryptoApp = {
 } // cryptoApp
 
 
-cryptoApp.initUI(); ///initialises ie the methods in the variable don't run automatically
+cryptoApp.initUI(); ///initialises ie the methods in the variable
 cryptoApp.loadTopTen(); // load and render top 10 crypto coins based on total marketcap
 
 
-
-/*
-
-TODO:
-1- Host SAP in GitHub - Settings -> pages AND provide link in README.md
-
-*/
