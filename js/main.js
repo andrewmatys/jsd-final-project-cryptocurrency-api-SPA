@@ -3,7 +3,7 @@ const cryptoApp = {
 
 
     config: {
-        API_KEY: "CG-QQSfXqT6EJWXG9UjjfhfoJVk", //  COIN GECKO API KEY
+        API_KEY: "CG-VJWALA4BxJPyofKW2fJPmuy8", //  COIN GECKO API KEY (would normally be in .env but placed here for showcase etc)
 
         CRYPTO_BASE_URL: "https://pro-api.coingecko.com/api/v3/coins/markets",
         CRYPTO_FULL_LIST: "https://pro-api.coingecko.com/api/v3/coins/list",
